@@ -27,8 +27,11 @@ public class WebMenuItemController {
     this.menuCategoryRepository = menuCategoryRepository;
   }
 
-  //@GetMapping
-  // public String getAllMenuItems (Model model) {
+  @GetMapping
+  public String getAllMenuItems (Model model) {
+    model.addAttribute("itemList", menuItemRepository.findAll());
+    return "items";
+  }
 
 
   @GetMapping("{id}")
@@ -43,12 +46,25 @@ public class WebMenuItemController {
     return "error/404";
   }
 
-  // @GetMapping("/new")
-  // public String newMenuItem (Model model) {
+  @GetMapping("/new")
+  public String newMenuItem (Model model) {
+    model.addAttribute("menuItem", new MenuItem());
+    model.addAttribute("categoryList", menuCategoryRepository.findAll());
+    return "edit_item";
+  }
 
-  // @PostMapping
-  // public String saveMenuItem (@Valid MenuItem newMenuItem,
-  //  Errors errors, RedirectAttributes redirectAttributes) {
+  @PostMapping
+  public String saveMenuItem (@Valid MenuItem newMenuItem,
+    Errors errors, RedirectAttributes redirectAttributes) {
+      if (errors.hasErrors()) {
+    return "edit_item";
+  }
+    menuItemRepository.save(newMenuItem);
+    redirectAttributes.addFlashAttribute("message",
+            String.format("Item '%s' saved", newMenuItem.getName()));
+    return "redirect:/items";
+}
+
 
   @GetMapping("/delete/{id}")
   public String deleteMenuItemById (@PathVariable Long id, RedirectAttributes redirectAttributes) {
