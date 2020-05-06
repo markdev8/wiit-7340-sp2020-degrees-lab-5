@@ -13,13 +13,11 @@ public class MenuItem {
   @ManyToOne
   private MenuCategory menuCategory;
   @NotNull
-  @Size(min = 1, max = 80,
-    message = "Please enter a name up to 80 characters in length")
+  @Size(min = 1, max = 80)
   private String name;
   private String description;
   @NotNull
-  @Size(min = 1, max = 20,
-    message = "Please enter a price up to 20 characters in length")
+  @Size(min = 1, max = 20)
   private String price;
   private int sortOrder;
 

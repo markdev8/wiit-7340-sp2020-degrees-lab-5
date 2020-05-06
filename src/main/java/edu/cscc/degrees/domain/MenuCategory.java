@@ -13,8 +13,7 @@ public class MenuCategory {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
   @NotNull
-  @Size(min = 1, max = 80,
-    message = "Please enter a category title up to 80 characters in length")
+  @Size(min = 1, max = 80)
   private String categoryTitle;
   private String categoryNotes;
   private int sortOrder;

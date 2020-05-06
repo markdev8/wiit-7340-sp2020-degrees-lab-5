@@ -15,14 +15,21 @@ public class WebContentController {
 
 
   // @GetMapping("/")
-  public String hanleIndex() {
+  @GetMapping("/")
+  public String handleIndex() {
     return "index";
   }
 
   // @GetMapping("/about")
+  @GetMapping("/about")
+  public String handleAbout() {return "about";}
 
 
   // @GetMapping("/menu")
-
+  @GetMapping("/menu")
+  public String getMenuPage(Model model) {
+    model.addAttribute("menuItems", contentService.getMenuItems());
+    return "menu";
+  }
 
 }

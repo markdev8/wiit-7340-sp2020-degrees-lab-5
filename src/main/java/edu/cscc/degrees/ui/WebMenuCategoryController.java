@@ -26,12 +26,29 @@ public class WebMenuCategoryController {
 
   // @GetMapping
   // public String getAllMenuCategories (Model model) {
+  @GetMapping
+  public String getAllMenuCategories (Model model) {
+    model.addAttribute("categoryList", menuCategoryRepository.findAll());
+    return "categories";
+  }
 
   // @GetMapping("{id}")
-  // public String getMenuCategoryById (@PathVariable Long id, Model model) {
+  @GetMapping("{id}")
+  public String getMenuCategoryById (@PathVariable Long id, Model model) {
+    Optional<MenuCategory> result = menuCategoryRepository.findById(id);
+    if (result.isPresent()) {
+      model.addAttribute("menuCategory", result.get());
+      return "edit_category";
+    } else {
+      return "error/404";
+    }
+  }
 
-  // @GetMapping("/new")
-  // public String newMenuCategory (Model model) {
+  @GetMapping("/new")
+  public String newMenuCategory (Model model) {
+    model.addAttribute("menuCategory", new MenuCategory());
+    return "edit_category";
+  }
 
   @PostMapping
   public String saveMenuCategory (@Valid MenuCategory newMenuCategory,
@@ -45,8 +62,18 @@ public class WebMenuCategoryController {
     return "redirect:/categories";
   }
 
-  // @GetMapping("/delete/{id}")
-  // public String deleteMenuCategoryById (@PathVariable Long id, RedirectAttributes redirectAttributes) {
-
+  @GetMapping("/delete/{id}")
+  public String deleteMenuCategoryById (@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    Optional<MenuCategory> result = menuCategoryRepository.findById(id);
+    if (result.isPresent()) {
+      menuCategoryRepository.delete(result.get());
+      redirectAttributes.addFlashAttribute("message",
+              String.format("Category %s deleted", id));
+    } else {
+      redirectAttributes.addFlashAttribute("error", "True");
+      redirectAttributes.addFlashAttribute("message", String.format("Category %d not found", id));
+    }
+    return "redirect:/categories";
+  }
 
 }

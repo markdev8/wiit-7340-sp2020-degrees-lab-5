@@ -20,4 +20,23 @@ public class DegreesApplication {
 		SpringApplication.run(DegreesApplication.class, args);
 	}
 
+	@Bean
+	public ResourceBundleMessageSource messageSource() {
+		ResourceBundleMessageSource source = new ResourceBundleMessageSource();
+		source.setBasename("i18n/messages");
+		source.setDefaultEncoding("UTF-8");
+		return source;
+	}
+
+	@Bean
+	public LocalValidatorFactoryBean getValidator() {
+		LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+
+		ResourceBundleMessageSource source = new ResourceBundleMessageSource();
+		source.setBasename("i18n/ValidationMessages");
+		source.setDefaultEncoding("UTF-8");
+
+		bean.setValidationMessageSource(source);
+		return bean;
+	}
 }
